@@ -179,7 +179,7 @@
 <body class="bg-light">
     <!-- Navigation -->
     <nav class="bg-white shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center relative">
             <div class="flex items-center">
                 <div class="flex items-center">
                     <img src="https://i.postimg.cc/FYnKn0qR/Naandhi-Logo.png" alt="Naandhi Logo" class="w-10 h-10 object-contain rounded-lg" >
@@ -204,16 +204,18 @@
             </div>
         </div>
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white py-2 px-4 shadow-lg">
-            <a href="#home" class="block py-2 text-primary font-medium" data-i18n="nav.home">Home</a>
-            <a href="#about" class="block py-2 text-gray-600 hover:text-primary font-medium" data-i18n="nav.about">About Us</a>
-            <a href="#services" class="block py-2 text-gray-600 hover:text-primary font-medium" data-i18n="nav.services">Services</a>
-            <a href="#vision" class="block py-2 text-gray-600 hover:text-primary font-medium" data-i18n="nav.vision">Vision & Mission</a>
-            <a href="#founders" class="block py-2 text-gray-600 hover:text-primary font-medium" data-i18n="nav.founders">Founders</a>
-            <a href="#contact" class="block py-2 text-gray-600 hover:text-primary font-medium" data-i18n="nav.contact">Contact</a>
-            <div class="language-switcher mt-2" id="mobile-language-switcher">
-                <img src="https://flagcdn.com/w40/gb.png" alt="English" class="lang-flag" data-lang="en">
-                <img src="https://flagcdn.com/w40/in.png" alt="Telugu" class="lang-flag" data-lang="te">
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200">
+            <div class="container mx-auto px-4 py-2">
+                <a href="#home" class="block py-3 text-primary font-medium hover:bg-gray-50" data-i18n="nav.home">Home</a>
+                <a href="#about" class="block py-3 text-gray-600 hover:text-primary hover:bg-gray-50 font-medium" data-i18n="nav.about">About Us</a>
+                <a href="#services" class="block py-3 text-gray-600 hover:text-primary hover:bg-gray-50 font-medium" data-i18n="nav.services">Services</a>
+                <a href="#vision" class="block py-3 text-gray-600 hover:text-primary hover:bg-gray-50 font-medium" data-i18n="nav.vision">Vision & Mission</a>
+                <a href="#founders" class="block py-3 text-gray-600 hover:text-primary hover:bg-gray-50 font-medium" data-i18n="nav.founders">Founders</a>
+                <a href="#contact" class="block py-3 text-gray-600 hover:text-primary hover:bg-gray-50 font-medium" data-i18n="nav.contact">Contact</a>
+                <div class="language-switcher mt-3 mb-3" id="mobile-language-switcher">
+                    <img src="https://flagcdn.com/w40/gb.png" alt="English" class="lang-flag" data-lang="en">
+                    <img src="https://flagcdn.com/w40/in.png" alt="Telugu" class="lang-flag" data-lang="te">
+                </div>
             </div>
         </div>
     </nav>
@@ -742,8 +744,27 @@
 
     <script>
         // Mobile menu toggle
-        document.getElementById('menu-toggle').addEventListener('click', function() {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            let isMenuOpen = false;
+
+            if (menuToggle && mobileMenu) {
+                menuToggle.addEventListener('click', () => {
+                    isMenuOpen = !isMenuOpen;
+                    mobileMenu.classList.toggle('hidden');
+                    menuToggle.setAttribute('aria-expanded', isMenuOpen);
+                });
+
+                // Close mobile menu when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (isMenuOpen && !mobileMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+                        mobileMenu.classList.add('hidden');
+                        isMenuOpen = false;
+                        menuToggle.setAttribute('aria-expanded', false);
+                    }
+                });
+            }
         });
 
         // Set current year in footer
@@ -786,26 +807,6 @@
             img.classList.add('image-loading');
             img.onload = function() {
                 this.classList.remove('image-loading');
-            }
-        });
-
-        // Enhanced mobile menu
-        const menuToggle = document.getElementById('menu-toggle');
-        const mobileMenu = document.getElementById('mobile-menu');
-        let isMenuOpen = false;
-
-        menuToggle.addEventListener('click', () => {
-            isMenuOpen = !isMenuOpen;
-            mobileMenu.classList.toggle('hidden');
-            menuToggle.setAttribute('aria-expanded', isMenuOpen);
-        });
-
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (isMenuOpen && !mobileMenu.contains(e.target) && !menuToggle.contains(e.target)) {
-                mobileMenu.classList.add('hidden');
-                isMenuOpen = false;
-                menuToggle.setAttribute('aria-expanded', false);
             }
         });
 
